@@ -35,6 +35,7 @@ export class CalendarService {
   getDays(): CalendarData {
     this.fixCorrectData(this.month)
     console.log(this.month , 'MOOOONTH')
+    console.log(new Date().getDate() , 'weekDay')
     let firstDayOfLastMonth = this.daysInMonth(this.year, this.month - 1) - (this.getFirstDayOfMonth() - 2)
     for (let i = 1; i < this.getFirstDayOfMonth(); i++) {
       this.days.push({
@@ -53,6 +54,7 @@ export class CalendarService {
         month: months[this.month],
         year: this.year,
         active: true,
+        current: this.checkCurrentDay(1)
     })
 
     for (let i = 2; i < this.daysInMonth(this.year, this.month) + 1; i++) {
@@ -62,6 +64,7 @@ export class CalendarService {
         month: months[this.month],
         year: this.year,
         active: true,
+        current: this.checkCurrentDay(i)
       })
     }
     return {
@@ -69,6 +72,10 @@ export class CalendarService {
       year: this.year,
       month: this.month
     }
+  }
+
+  checkCurrentDay(weekDay: number) {
+    return this.year === new Date().getFullYear() && new Date().getDate() === weekDay && new Date().getMonth() === this.month
   }
 
   changeMonth(dir: number) {

@@ -17,6 +17,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.daysData = this.calendarService.getDays()
+    console.log(this.daysData, 'AAAA')
   }
 
   changeMonth(dir: number) {
