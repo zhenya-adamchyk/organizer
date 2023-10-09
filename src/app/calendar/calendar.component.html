@@ -1,0 +1,27 @@
+
+
+
+<div class="calendar">
+    <div class="calendar_actions">
+        <button (click)="changeMonth(0)">Prev</button>
+        <div>
+            <span>{{daysData?.year}}</span> / 
+            <span>{{allMonths[daysData?.month || 0]}}</span>
+        </div>
+        <button (click)="changeMonth(1)">Next</button>
+    </div>
+    <div class="calendar_header">
+        <div class="calendar_day calendar_header_day" *ngFor="let day of days | keyvalue">
+            {{day.value}}
+        </div>
+    </div>
+    <div class="calendar_cont">
+        <div
+            class="calendar_day"
+            [ngClass]="{'calendar_day--old':!dayData.active}"
+            [ngClass]="{'calendar_day--current':dayData.current}"
+            *ngFor="let dayData of daysData?.days">
+            {{dayData.weekDay}} {{dayData.dayNumber}} 
+        </div>
+    </div>
+</div>
