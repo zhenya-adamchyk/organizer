@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Days } from '../enums/days';
 import { CalendarData, Day } from '../interfaces/calendarData';
+import { Observable, Subject } from 'rxjs';
 
 export const months = [
   'January',
@@ -17,14 +18,12 @@ export const months = [
   'December',
 ]
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CalendarService {
   private year = new Date().getFullYear()
   private month = new Date().getMonth()
-  private currentDay = new Date().getDay()
-  days: Day[] = []
+  public dayS = new Subject<Day>()
+  public days: Day[] = []
 
   daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate()
   weekDay = (day: number) => day ? day : 7
@@ -32,7 +31,12 @@ export class CalendarService {
   getLastDayOfMonth = () => this.weekDay(new Date(this.year, this.month + 1, 0).getDay())
   getWeekNumber = (year: number, month: number, dayNumber: number) => new Date(year, month, dayNumber).getDay()
 
+  setDay(data: Day) {
+    this.dayS.next(data)
+  }
+
   getDays(): CalendarData {
+    this.days = []
     this.fixCorrectData(this.month)
     console.log(this.month , 'MOOOONTH')
     console.log(new Date().getDate() , 'weekDay')

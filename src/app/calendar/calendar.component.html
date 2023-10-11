@@ -19,8 +19,9 @@
         <div
             class="calendar_day"
             [ngClass]="{'calendar_day--old': !dayData.active, 'calendar_day--current': dayData.current}"
-            *ngFor="let dayData of daysData?.days">
-            {{dayData.dayNumber}} 
+            *ngFor="let dayData of daysData?.days"
+            (click)="openEvent(dayData)">
+            {{dayData.dayNumber}}
         </div>
     </div>
 </div>
