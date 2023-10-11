@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Day } from '../interfaces/calendarData';
 import { CalendarService } from '../calendar/calendar.service';
 import { Subscription } from 'rxjs';
+import { EventService } from './event.service';
 
 @Component({
   selector: 'app-event',
@@ -9,11 +10,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, OnDestroy {
-  day: Day | undefined
+  day: Day
   subscription: Subscription | undefined
 
   constructor(
-    private readonly calendarService: CalendarService
+    private readonly calendarService: CalendarService,
+    private readonly eventService: EventService,
   ) {
    }
    ngOnInit(): void {
@@ -26,5 +28,11 @@ export class EventComponent implements OnInit, OnDestroy {
       this.subscription?.unsubscribe()
     }
 
+    createEvent(day: Day): void {
+      this.eventService.createEvent(day).subscribe()
+    }
 
+    removeEvent(day: Day): void {
+      this.eventService.removeEvent(day).subscribe()
+    }
 }
