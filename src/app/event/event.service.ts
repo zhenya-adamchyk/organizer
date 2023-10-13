@@ -17,4 +17,8 @@ export class EventService {
   removeEvent(data: Day): Observable<any> {
     return this.http.delete(`${EventService.url}events/${data.year}-${data.month}-${data.dayNumber}.json`)
   }
+
+  getEvent(day: Day): Observable<any> {
+    return this.http.get(`${EventService.url}events/${day.year}-${day.month}-${day.dayNumber}.json`)
+  }
 }

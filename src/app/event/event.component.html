@@ -4,4 +4,21 @@
 
 <button (click)="createEvent(day)">Create</button>
 <button (click)="removeEvent(day)">Remove</button>
+<button (click)="getEvent(day)">Get</button>
+<button (click)="sendM('HELLO MUCHER FUCKERRR!!!!!!')">SendM</button>
 
+
+<form [formGroup]="myForm" class="main-form" action="">
+    <label for="">description</label>
+    <input formControlName="description" type="text">
+    <label for="">text</label>
+    <input formControlName="text" type="text">
+    <label for="">timeToSend</label>
+    <input formControlName="timeToSend" type="text">
+    <label for="">amountToRepeat</label>
+    <input formControlName="amountToRepeat" type="text">
+    <div>
+        <button type="submit">Submit</button>
+        <button>Delete</button>
+    </div>
+</form>
