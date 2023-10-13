@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Days } from '../enums/days';
 import { CalendarData, Day } from '../interfaces/calendarData';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { EventService } from '../event/event.service';
 
 export const months = [
   'January',
@@ -20,6 +21,7 @@ export const months = [
 
 @Injectable({ providedIn: 'root' })
 export class CalendarService {
+  constructor(private readonly eventsService: EventService) {}
   private year = new Date().getFullYear()
   private month = new Date().getMonth()
   public dayS = new Subject<Day>()
@@ -35,47 +37,47 @@ export class CalendarService {
     this.dayS.next(data)
   }
 
-  getDays(): CalendarData {
+  async getDays(): Promise<CalendarData> {
     this.days = []
     this.fixCorrectData(this.month)
     console.log(this.month , 'MOOOONTH')
     console.log(new Date().getDate() , 'weekDay')
     let firstDayOfLastMonth = this.daysInMonth(this.year, this.month - 1) - (this.getFirstDayOfMonth() - 2)
-    for (let i = 1; i < this.getFirstDayOfMonth(); i++) {
-      this.days.push({
-        dayNumber: firstDayOfLastMonth,
-        weekDay: Days[this.weekDay(this.getWeekNumber(this.year, this.month - 1, firstDayOfLastMonth))],
-        month: months[this.month - 1],
-        year: this.year,
-        active: false,
-      })
-      firstDayOfLastMonth++
-    }
+    this.eventsService.getEvents().subscribe((res) => {
+      console.log(res, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAa')
 
-    this.days.push({
-      dayNumber: 1,
-        weekDay: Days[this.weekDay(this.getWeekNumber(this.year, this.month, 1))],
-        month: months[this.month],
-        year: this.year,
-        active: true,
-        current: this.checkCurrentDay(1)
+      for (let i = 1; i < this.getFirstDayOfMonth(); i++) {
+        this.pushDay(1, firstDayOfLastMonth, this.convert(res[`${this.year}-${months[this.month - 1]}-${firstDayOfLastMonth}`]))
+        firstDayOfLastMonth++
+      }
+  
+      this.pushDay(0, 1, this.convert(res[`${this.year}-${months[this.month]}-1`]))
+  
+      for (let i = 2; i < this.daysInMonth(this.year, this.month) + 1; i++) {
+        this.pushDay(0, i, this.convert(res[`${this.year}-${months[this.month]}-${i}`]) || [])
+      }
     })
-
-    for (let i = 2; i < this.daysInMonth(this.year, this.month) + 1; i++) {
-      this.days.push({
-        dayNumber: i,
-        weekDay: Days[this.weekDay(this.getWeekNumber(this.year, this.month, i))],
-        month: months[this.month],
-        year: this.year,
-        active: true,
-        current: this.checkCurrentDay(i)
-      })
-    }
     return {
       days: this.days,
       year: this.year,
       month: this.month
     }
+  }
+
+  convert(events: any) {
+    return Object.keys(events || {}).map(k => ({...events[k], id: k}))
+  }
+
+  pushDay(monthDif: number, day: number, events: any): void {
+    this.days.push({
+      dayNumber: day,
+      weekDay: Days[this.weekDay(this.getWeekNumber(this.year, this.month - monthDif, day))],
+      month: months[this.month - monthDif],
+      year: this.year,
+      active: true,
+      current: this.checkCurrentDay(day),
+      events: events || [],
+    })
   }
 
   checkCurrentDay(weekDay: number) {

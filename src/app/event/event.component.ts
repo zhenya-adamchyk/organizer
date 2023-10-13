@@ -15,7 +15,12 @@ export class EventComponent implements OnInit, OnDestroy {
   day: Day
   subscription: Subscription | undefined
 
-  myForm : FormGroup
+  myForm : FormGroup = new FormGroup({
+    "description": new FormControl(),
+    "text": new FormControl(),
+    "timeToSend": new FormControl(),
+    "amountToRepeat": new FormControl(),
+  });
 
   constructor(
     private readonly calendarService: CalendarService,
@@ -24,23 +29,21 @@ export class EventComponent implements OnInit, OnDestroy {
   ) {
    }
    ngOnInit(): void {
-    this.myForm = new FormGroup({
-      "description": new FormControl(),
-      "text": new FormControl(),
-      "timeToSend": new FormControl(),
-      "amountToRepeat": new FormControl(),
-    });
      this.subscription = this.calendarService.dayS.subscribe(d => {
       this.day = d
+      if (this.day.events.length) {
+        this.myForm.controls['description'].patchValue(this.day.events[0].description)
+        this.myForm.controls['text'].patchValue(this.day.events[0].text)
+        this.myForm.controls['timeToSend'].patchValue(this.day.events[0].timeToSend)
+        this.myForm.controls['amountToRepeat'].patchValue(this.day.events[0].amountToRepeat)
+      } else {
+        this.myForm.reset()
+      }
      })
       
     }
     ngOnDestroy(): void {
       this.subscription?.unsubscribe()
-    }
-
-    createEvent(day: Day): void {
-      this.eventService.createEvent(day).subscribe()
     }
 
     removeEvent(day: Day): void {
@@ -55,5 +58,11 @@ export class EventComponent implements OnInit, OnDestroy {
 
     sendM(m: string) {
       this.telegramService.sendM(m).subscribe()
+    }
+
+    onSubmit(): void {
+      this.eventService.createEvent(this.day, this.myForm.value).subscribe((d)  => {
+        console.log(d, 'NEWDAY')
+      })
     }
 }

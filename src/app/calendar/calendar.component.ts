@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CalendarService, months } from './calendar.service';
 import { Days } from '../enums/days';
 import { CalendarData, Day } from '../interfaces/calendarData';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -16,17 +15,16 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private readonly calendarService: CalendarService,
-    private readonly router: Router,
     ) {}
 
-  ngOnInit(): void {
-    this.daysData = this.calendarService.getDays()
+  async ngOnInit(): Promise<void> {
+    this.daysData = await this.calendarService.getDays()
     console.log(this.daysData, 'AAAA')
   }
 
-  changeMonth(dir: number) {
+  async changeMonth(dir: number): Promise<void> {
     this.calendarService.changeMonth(dir)
-    this.daysData = this.calendarService.getDays()
+    this.daysData = await this.calendarService.getDays()
     console.log(this.daysData, 'AAAA')
   }
 

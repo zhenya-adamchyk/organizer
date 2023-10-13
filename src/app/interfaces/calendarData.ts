@@ -1,11 +1,12 @@
 export interface Day {
+    id?: String
     dayNumber: number
     weekDay: string
     month: string
     year: number
     active: boolean
     current?: boolean
-    events?: Event[]
+    events: Event[]
 }
 
 export interface CalendarData {

@@ -2,8 +2,8 @@
     <div class="calendar_actions">
         <p class="calendar_arrow" (click)="changeMonth(0)">&#x25C2;</p>
         <div>
-            <span>{{daysData.year}}</span> / 
-            <span>{{allMonths[daysData.month || 0]}}</span>
+            <span>{{daysData?.year}}</span> / 
+            <span>{{allMonths[daysData?.month]}}</span>
         </div>
         <p class="calendar_arrow" (click)="changeMonth(1)">&#9656;</p>
     </div>
@@ -15,8 +15,8 @@
     <div class="calendar_cont">
         <div
             class="calendar_day"
-            [ngClass]="{'calendar_day--old': !dayData.active, 'calendar_day--current': dayData.current}"
-            *ngFor="let dayData of daysData.days"
+            [ngClass]="{'calendar_day--old': !dayData.active, 'calendar_day--current': dayData.current, 'calendar_day--has-event': dayData?.events.length}"
+            *ngFor="let dayData of daysData?.days"
             (click)="openEvent(dayData)">
             {{dayData.dayNumber}}
         </div>
