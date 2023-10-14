@@ -8,3 +8,36 @@
 body {
     font-family: 'Roboto';
 }
+
+label {
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+input {
+    border: none;
+    border-bottom: 2px solid grey;
+    padding: 8px 4px;
+    font-size: 16px;
+    &:focus-visible {
+        outline: -webkit-focus-ring-color auto 0px;
+        border-bottom: 2px solid #11998e;
+    }
+    &.ng-invalid {
+        border-bottom: 2px solid red;
+    }
+}
+
+.my-button {
+    padding: 5px 15px;
+    background: #11998e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 8px 4px;
+    font-weight: bold;
+    font-size: 16px;
+    &--alert {
+        background: red;
+    }
+}

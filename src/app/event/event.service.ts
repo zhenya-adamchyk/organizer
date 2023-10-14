@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Day } from '../interfaces/calendarData';
-import { Observable, map } from 'rxjs';
+import { Day, Event } from '../interfaces/calendarData';
+import { Observable, Subject, map } from 'rxjs';
 
 interface CreateResponse {
   name: String
@@ -12,6 +12,11 @@ interface CreateResponse {
 export class EventService {
   constructor(private readonly http: HttpClient) { }
   static url = 'https://organizer-9ac18-default-rtdb.europe-west1.firebasedatabase.app/'
+  public eventS = new Subject<Event>()
+
+  setEvent(data: Event) {
+    this.eventS.next(data)
+  }
 
   createEvent(data: Day, event: Event): Observable<any> {
     return this.http.post<CreateResponse>(`${EventService.url}events/${data.year}-${data.month}-${data.dayNumber}.json`, event).pipe(map((d) => {
@@ -19,8 +24,8 @@ export class EventService {
     }))
   }
 
-  removeEvent(data: Day): Observable<any> {
-    return this.http.delete(`${EventService.url}events/${data.year}-${data.month}-${data.dayNumber}.json`)
+  removeEvent(data: Day, event: Event): Observable<any> {
+    return this.http.delete(`${EventService.url}events/${data.year}-${data.month}-${data.dayNumber}/${event.id}.json`)
   }
 
   getEvent(day: Day): Observable<any> {

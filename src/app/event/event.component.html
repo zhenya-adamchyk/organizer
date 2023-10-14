@@ -1,10 +1,13 @@
-<ng-container *ngIf="day">
-    <p>{{day | json}}</p>
-</ng-container>
-
-<button (click)="sendM('HELLO MUCHER FUCKERRR!!!!!!')">SendM</button>
-
 <form *ngIf="day" (ngSubmit)="onSubmit()" [formGroup]="myForm" class="main-form" action="">
+    <div *ngIf="day?.events?.length > 1" class="main-form_events">
+        <div
+            class="main-form_event"
+            *ngFor="let event of day.events"
+            (click)="pickEvent(event)">
+            {{event.text}}
+        </div>
+    </div>
+    <p>{{day.dayNumber}}/{{day.month}}/{{day.year}}</p>
     <label for="">description</label>
     <input formControlName="description" type="text">
     <label for="">text</label>
@@ -13,8 +16,9 @@
     <input formControlName="timeToSend" type="text">
     <label for="">amountToRepeat</label>
     <input formControlName="amountToRepeat" type="text">
-    <div>
-        <button type="submit">Submit</button>
-        <button (click)="removeEvent(day)" type="button">Delete</button>
+    <div class="main-form_actions-block">
+        <button class="my-button" type="submit">Submit</button>
+        <button class="my-button my-button--alert" (click)="removeEvent()" type="button">Delete</button>
+        <button class="my-button" (click)="sendM('HELLO MUCHER FUCKERRR!!!!!!')">SendM</button>
     </div>
 </form>

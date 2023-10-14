@@ -22,4 +22,5 @@ export interface Event {
     overdue: boolean
     timeToSend: any
     amountToRepeat: number
+    id?: String
 }

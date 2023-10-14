@@ -1,6 +1,6 @@
 .calendar {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     &_arrow {
         cursor: pointer;
         font-size: 25px;
@@ -16,6 +16,10 @@
     &_cont {
         display: flex;
         flex-wrap: wrap;
+        &--momile {
+            flex-direction: column;
+            padding: 0 20px;
+        }
     }
     &_header {
         display: flex;
@@ -36,7 +40,7 @@
             pointer-events: none;
         }
         &--current {
-            background: #7279db;
+            border: 2px solid red;
         }
         &--has-event {
             background: #444bb6;

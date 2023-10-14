@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Day } from '../interfaces/calendarData';
+import { Day, Event } from '../interfaces/calendarData';
 import { CalendarService } from '../calendar/calendar.service';
 import { Subscription } from 'rxjs';
 import { EventService } from './event.service';
@@ -14,6 +14,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class EventComponent implements OnInit, OnDestroy {
   day: Day
   subscription: Subscription | undefined
+  currentEvent: Event
 
   myForm : FormGroup = new FormGroup({
     "description": new FormControl(),
@@ -31,11 +32,9 @@ export class EventComponent implements OnInit, OnDestroy {
    ngOnInit(): void {
      this.subscription = this.calendarService.dayS.subscribe(d => {
       this.day = d
+      this.currentEvent = this.day.events[0]
       if (this.day.events.length) {
-        this.myForm.controls['description'].patchValue(this.day.events[0].description)
-        this.myForm.controls['text'].patchValue(this.day.events[0].text)
-        this.myForm.controls['timeToSend'].patchValue(this.day.events[0].timeToSend)
-        this.myForm.controls['amountToRepeat'].patchValue(this.day.events[0].amountToRepeat)
+        this.patchForm(this.currentEvent)
       } else {
         this.myForm.reset()
       }
@@ -46,8 +45,19 @@ export class EventComponent implements OnInit, OnDestroy {
       this.subscription?.unsubscribe()
     }
 
-    removeEvent(day: Day): void {
-      this.eventService.removeEvent(day).subscribe()
+    patchForm(event: Event) {
+      this.myForm.controls['description'].patchValue(event.description)
+      this.myForm.controls['text'].patchValue(event.text)
+      this.myForm.controls['timeToSend'].patchValue(event.timeToSend)
+      this.myForm.controls['amountToRepeat'].patchValue(event.amountToRepeat)
+    }
+
+    removeEvent(): void {
+      console.log(this.currentEvent)
+      this.eventService.removeEvent(this.day, this.currentEvent).subscribe((d) => {
+        this.eventService.setEvent(d)
+        this.day.events = this.day.events.filter((e) => e.id !== this.currentEvent.id)
+      })
     }
 
     getEvent(day: Day): void {
@@ -62,7 +72,13 @@ export class EventComponent implements OnInit, OnDestroy {
 
     onSubmit(): void {
       this.eventService.createEvent(this.day, this.myForm.value).subscribe((d)  => {
+        this.eventService.setEvent(d)
         console.log(d, 'NEWDAY')
       })
+    }
+
+    pickEvent(e: Event) {
+      this.currentEvent = e
+      this.patchForm(e)
     }
 }

@@ -33,22 +33,22 @@ export class CalendarService {
   getLastDayOfMonth = () => this.weekDay(new Date(this.year, this.month + 1, 0).getDay())
   getWeekNumber = (year: number, month: number, dayNumber: number) => new Date(year, month, dayNumber).getDay()
 
-  setDay(data: Day) {
+  setDay(data: Day | null) {
     this.dayS.next(data)
   }
 
   async getDays(): Promise<CalendarData> {
     this.days = []
     this.fixCorrectData(this.month)
-    console.log(this.month , 'MOOOONTH')
-    console.log(new Date().getDate() , 'weekDay')
     let firstDayOfLastMonth = this.daysInMonth(this.year, this.month - 1) - (this.getFirstDayOfMonth() - 2)
     this.eventsService.getEvents().subscribe((res) => {
       console.log(res, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAa')
 
       for (let i = 1; i < this.getFirstDayOfMonth(); i++) {
-        this.pushDay(1, firstDayOfLastMonth, this.convert(res[`${this.year}-${months[this.month - 1]}-${firstDayOfLastMonth}`]))
-        firstDayOfLastMonth++
+        if (!this.isMobile) {
+          this.pushDay(1, firstDayOfLastMonth, this.convert(res[`${this.year}-${months[this.month - 1]}-${firstDayOfLastMonth}`]))
+          firstDayOfLastMonth++
+        }
       }
   
       this.pushDay(0, 1, this.convert(res[`${this.year}-${months[this.month]}-1`]))
@@ -97,5 +97,9 @@ export class CalendarService {
         this.month = 0
         this.year++
       }
+  }
+
+  isMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false
   }
 }
