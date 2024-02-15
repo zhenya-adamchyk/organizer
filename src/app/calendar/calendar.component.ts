@@ -1,47 +1,64 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CalendarService, months } from './calendar.service';
-import { Days } from '../enums/days';
-import { CalendarData, Day } from '../interfaces/calendarData';
-import { EventService } from '../event/event.service';
-import { Subscription } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import * as moment from 'moment';
+import {DateService} from '../shared/date.service';
+
+interface Day {
+  value: moment.Moment
+  active: boolean
+  disabled: boolean
+  selected: boolean
+}
+
+interface Week {
+  days: Day[]
+}
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit, OnDestroy {
-  public daysData: CalendarData | undefined
-  public days = Object.values(Days).filter((d) => typeof d !== 'number')
-  public allMonths = months
-  subscription: Subscription | undefined
-  isMobile: boolean
+export class CalendarComponent implements OnInit {
 
-  constructor(
-    private readonly calendarService: CalendarService,
-    private readonly eventService: EventService,
-    ) {}
+  calendar: Week[];
 
-  async ngOnInit(): Promise<void> {
-    this.isMobile = this.calendarService.isMobile()
-    this.eventService.eventS.subscribe(async () => {
-      this.daysData = await this.calendarService.getDays()
-    })
-    this.daysData = await this.calendarService.getDays()
-    console.log(this.daysData, 'AAAA')
+  constructor(private dateService: DateService) {
   }
 
-  async changeMonth(dir: number): Promise<void> {
-    this.calendarService.changeMonth(dir)
-    this.daysData = await this.calendarService.getDays()
-    console.log(this.daysData, 'AAAA')
+  ngOnInit() {
+    this.dateService.date.subscribe(this.generate.bind(this))
   }
 
-  openEvent(dayData: Day): void {
-    this.calendarService.setDay(dayData)
+  generate(now: moment.Moment) {
+    const startDay = now.clone().startOf('month').startOf('week')
+    const endDay = now.clone().endOf('month').endOf('week')
+
+    const date = startDay.clone().subtract(1, 'day')
+
+    const calendar = []
+
+    while (date.isBefore(endDay, 'day')) {
+      calendar.push({
+        days: Array(7)
+          .fill(0)
+          .map(() => {
+            const value = date.add(1, 'day').clone()
+            const active = moment().isSame(value, 'date')
+            const disabled = !now.isSame(value, 'month')
+            const selected = now.isSame(value, 'date')
+
+            return {
+              value, active, disabled, selected
+            }
+          })
+      })
+    }
+
+    this.calendar = calendar
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe()
+  select(day: moment.Moment) {
+    this.dateService.changeDate(day)
   }
+
 }

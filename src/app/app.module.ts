@@ -4,13 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
-import { EventComponent } from './event/event.component';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { OrganizerComponent } from './organizer/organizer.component';
+import { SelectorComponent } from './selector/selector.component';
+import { MomentPipe } from './shared/moment.pipe';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAM7sVwsY8CougTXVQJyaTKl50whky4HfQ",
@@ -29,16 +30,18 @@ const analytics = getAnalytics(app);
   declarations: [
     AppComponent,
     CalendarComponent,
-    EventComponent
+    SelectorComponent,
+    OrganizerComponent,
+    MomentPipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
