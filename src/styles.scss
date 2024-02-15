@@ -1,43 +1,95 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+  --primary-color: #dc3545;
+  --dark-color: #333333;
+  --light-color: #f4f4f4;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Roboto';
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background: #fff;
+  color: #333;
 }
 
-label {
-    font-weight: bold;
-    padding: 5px 0;
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+
+  &:hover {
+    color: #666;
+  }
 }
+
+ul {
+  list-style: none;
+}
+
 
 input {
-    border: none;
-    border-bottom: 2px solid grey;
-    padding: 8px 4px;
-    font-size: 16px;
-    &:focus-visible {
-        outline: -webkit-focus-ring-color auto 0px;
-        border-bottom: 2px solid #11998e;
-    }
-    &.ng-invalid {
-        border-bottom: 2px solid red;
-    }
+  display: block;
+  width: 100%;
+  padding: .4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: .5rem;
 }
 
-.my-button {
-    padding: 5px 15px;
-    background: #11998e;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    margin: 8px 4px;
-    font-weight: bold;
-    font-size: 16px;
-    &--alert {
-        background: red;
-    }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+table th {
+  background: var(--light-color);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--light-color);
+  color: #333;
+  padding: .4rem 1.3rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin-right: .5rem;
+  transition: opacity .2s;
+  outline: none;
+
+  &:disabled {
+    background: var(--dark-color);
+    color: #fff;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: .8;
+  }
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.text-center {
+  text-align: center;
 }
