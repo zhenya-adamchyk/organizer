@@ -16,6 +16,10 @@ table {
       opacity: .5;
     }
 
+    &.has-tasks {
+      background: rgb(102, 169, 172);
+    }
+
     &:hover:not(.disabled) {
       background: #eee;
       cursor: pointer;

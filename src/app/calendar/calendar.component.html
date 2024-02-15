@@ -16,6 +16,7 @@
     <td
       *ngFor="let day of week.days"
       [class.disabled]="day.disabled"
+      [class.has-tasks]="day.hasTasks"
       (click)="select(day.value)"
     >
       <span

@@ -2,9 +2,7 @@ import {Injectable} from '@angular/core';
 import * as moment from 'moment'
 import {BehaviorSubject} from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class DateService {
   public date: BehaviorSubject<moment.Moment> = new BehaviorSubject(moment())
 
@@ -14,10 +12,11 @@ export class DateService {
   }
 
   changeDate(date: moment.Moment) {
-    const value = this.date.value.set({
-      date: date.date(),
-      month: date.month()
-    })
+    const value = this.date.value.set({ date: date.date(), month: date.month() })
     this.date.next(value)
+  }
+
+  setNow() {
+    this.date.next(moment())
   }
 }

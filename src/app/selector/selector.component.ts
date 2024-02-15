@@ -14,4 +14,8 @@ export class SelectorComponent {
     this.dateService.changeMonth(dir)
   }
 
+  setNow() {
+    this.dateService.setNow()
+  }
+
 }

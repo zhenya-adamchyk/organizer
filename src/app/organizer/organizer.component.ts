@@ -17,9 +17,9 @@ export class OrganizerComponent implements OnInit {
   constructor(readonly dateService: DateService, readonly tasksService: TasksService) { }
 
   ngOnInit() {
-    this.dateService.date.pipe(
-      switchMap(value => this.tasksService.load(value))
-    ).subscribe(tasks => {
+    this.dateService.date
+      .pipe(switchMap(value => this.tasksService.load(value)))
+      .subscribe(tasks => {
       this.tasks = tasks
     })
 
@@ -39,13 +39,15 @@ export class OrganizerComponent implements OnInit {
     this.tasksService.create(task).subscribe(task => {
       this.tasks.push(task)
       this.form.reset()
-    }, err => console.error(err))
+      this.dateService.date.next(this.dateService.date.value)
+    })
   }
 
   remove(task: Task) {
     this.tasksService.remove(task).subscribe(() => {
       this.tasks = this.tasks.filter(t => t.id !== task.id)
-    }, err => console.error(err))
+      this.dateService.date.next(this.dateService.date.value)
+    })
   }
 
 }

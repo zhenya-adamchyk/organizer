@@ -16,7 +16,7 @@ interface CreateResponse {
 
 @Injectable({providedIn: 'root'})
 export class TasksService {
-  static url = 'https://organizer-9ac18-default-rtdb.europe-west1.firebasedatabase.app/'
+  static url = 'https://organizer-9ac18-default-rtdb.europe-west1.firebasedatabase.app/tasks/'
 
   constructor(private http: HttpClient) {
   }
@@ -32,17 +32,18 @@ export class TasksService {
       }))
   }
 
+  loadAll(): Observable<Task[]> {
+    return this.http.get<Task[]>(`${TasksService.url}.json`)
+  }
+
   create(task: Task): Observable<Task> {
     return this.http
       .post<CreateResponse>(`${TasksService.url}/${task.date}.json`, task)
-      .pipe(map(res => {
-        return {...task, id: res.name}
-      }))
+      .pipe(map(res => ({...task, id: res.name})))
   }
 
   remove(task: Task): Observable<void> {
-    return this.http
-      .delete<void>(`${TasksService.url}/${task.date}/${task.id}.json`)
+    return this.http.delete<void>(`${TasksService.url}/${task.date}/${task.id}.json`)
   }
 
 }

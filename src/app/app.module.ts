@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { OrganizerComponent } from './organizer/organizer.component';
 import { SelectorComponent } from './selector/selector.component';
 import { MomentPipe } from './shared/moment.pipe';
@@ -24,7 +23,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 @NgModule({
   declarations: [
