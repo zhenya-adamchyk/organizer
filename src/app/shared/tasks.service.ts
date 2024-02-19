@@ -8,6 +8,7 @@ export interface Task {
   id?: string
   title: string
   date?: string
+  time: string
 }
 
 interface CreateResponse {

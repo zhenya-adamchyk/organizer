@@ -50,7 +50,6 @@ export class CalendarComponent implements OnInit {
               const disabled = !now.isSame(value, 'month')
               const selected = now.isSame(value, 'date')
               const hasTasks = t[date.format('DD-MM-YYYY')]
-              console.log(date.format('DD-MM-YYYY'))
   
               return {
                 value, active, disabled, selected, hasTasks

@@ -6,12 +6,10 @@
 
   <main>
     <ul *ngIf="tasks.length; else noTasks">
-      <li class="task" *ngFor="let task of tasks; let i = index">
-        <span>
-          <strong>{{i + 1}}</strong>
-          {{task.title}}
-        </span>
-        <button class="btn btn-primary" (click)="remove(task)">Remove</button>
+      <li class="task" *ngFor="let task of tasks">
+        <p>{{task.time}}</p>
+        <span> {{task.title}}</span>
+        <button class="btn btn-primary" (click)="remove(task)">X</button>
       </li>
     </ul>
     <ng-template #noTasks>
@@ -22,12 +20,17 @@
   <footer>
     <form (ngSubmit)="submit()" [formGroup]="form">
       <input type="text" formControlName="title">
+      <input type="time" formControlName="time">
+      <label>how much years need repeat?</label>
+      <input type="number" formControlName="repeatTask">
 
       <button
         type="submit"
         class="btn btn-primary btn-block"
         [disabled]="form.invalid"
-      >Add</button>
+      >
+        Add
+      </button>
     </form>
   </footer>
 </section>
