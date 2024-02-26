@@ -1,7 +1,6 @@
 <section>
   <header>
     <strong>{{dateService.date | async | moment:'DD.MM.YYYY'}}</strong>
-    <hr />
   </header>
 
   <main>
@@ -13,24 +12,26 @@
       </li>
     </ul>
     <ng-template #noTasks>
-      <p class="text-center">No tasks yet...</p>
+      <p>No tasks yet...</p>
     </ng-template>
   </main>
 
   <footer>
     <form (ngSubmit)="submit()" [formGroup]="form">
+      <label>text description</label>
       <input type="text" formControlName="title">
-      <input type="time" formControlName="time">
-      <label>how much years need repeat?</label>
-      <input type="number" formControlName="repeatTask">
+      <div style="display: flex; justify-content: space-between;">
+        <div class="w45">
+          <label>Set the time</label>
+          <input type="time" formControlName="time">
+        </div>
+        <div class="w45">
+          <label>Years to repeat</label>
+          <input type="number" formControlName="repeatTask">
+        </div>
+      </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary btn-block"
-        [disabled]="form.invalid"
-      >
-        Add
-      </button>
+      <button  type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid">Add</button>
     </form>
   </footer>
 </section>

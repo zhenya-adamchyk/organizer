@@ -1,6 +1,8 @@
-<p>
-  <span (click)="go(-1)">Prev month</span>
-  <span>{{dateService.date | async | moment}}</span>
-  <span (click)="go(1)">Next month</span>
-  <span (click)="setNow()">Now</span>
-</p>
+<div class="selector-container">
+  <p style="font-weight: bold;">{{dateService.date | async | moment}}</p>
+  <div class="selector-container_actions-block">
+    <button class="btn btn-block" (click)="setNow()">Today</button>
+    <div class="arrow arrow--left" (click)="go(-1)"></div>
+    <div class="arrow arrow--right" (click)="go(1)"></div>
+  </div>
+</div>

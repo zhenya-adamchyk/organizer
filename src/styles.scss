@@ -4,8 +4,8 @@
 
 :root {
   --primary-color: #dc3545;
-  --dark-color: #333333;
-  --light-color: #f4f4f4;
+  --dark-color: rgba(119, 207, 184, 0.2);
+  --light-color: rgba(119, 207, 184, 1);
 }
 
 * {
@@ -44,29 +44,36 @@ input {
   display: block;
   width: 100%;
   padding: .4rem;
-  font-size: 1.2rem;
-  border: 1px solid #ccc;
+  font-size: 0.8rem;
+  border: 1px solid rgba(209, 213, 219, 1);
+  border-radius: 10px;
   outline: none;
   margin-bottom: .5rem;
+  height: 40px;
+}
+
+label {
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: rgba(107, 114, 128, 1);
+  margin: 0 0 8px 8px;
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 400px;
   margin: auto;
   overflow: hidden;
   padding: 0 10px;
 }
 
-table th {
-  background: var(--light-color);
-}
-
 .btn {
   background: var(--light-color);
-  color: #333;
+  color: white;
   padding: .4rem 1.3rem;
   font-size: 1rem;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
   margin-right: .5rem;
   transition: opacity .2s;
@@ -85,7 +92,7 @@ table th {
 
 .btn-block {
   display: block;
-  width: 100%;
+  // width: 100%;
 }
 
 .btn-primary {
@@ -93,6 +100,6 @@ table th {
   color: #fff;
 }
 
-.text-center {
-  text-align: center;
+.w45 {
+  width: 45%;
 }
